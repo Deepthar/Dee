@@ -1,18 +1,29 @@
 package Report;
 
+import java.lang.reflect.Method;
+
 public class Driver {
 	
 	public static void main(String[] args) throws Exception {
+		String dt_path = "C:/Users/Shwetha/Desktop/test_case.xls";
+		String[][] recData =ReUsableMethods.readXlSheet(dt_path,"Sheet1");
 		
-		AutomationScripts.TC01();
-		AutomationScripts.TC02();
-		AutomationScripts.TC03();
-		AutomationScripts.TC04a();
-		AutomationScripts.TC04b();
-		AutomationScripts.TC05();
-		AutomationScripts.TC08();
-		AutomationScripts.TC09();
-		
+		for(int i =8;i<recData.length;i++){
+			String execute = recData[i][1];
+			
+			if(execute.equalsIgnoreCase("Y")){
+				String testCase =recData[i][2];
+				
+				
+				Method tc = AutomationScripts.class.getMethod(testCase);
+				tc.invoke(tc);
+				
+				String val = AutomationScripts.TC08();
+				ReUsableMethods.writeXlSheet(dt_path, "Sheet1",val,i);
+			}
+		}
+	
 	}
-
+	
 }
+
